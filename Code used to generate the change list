@@ -1,0 +1,519 @@
+/*
+	This is C code, if you don't know how to run it, you can use Visual Studio and treat it as C++ code. The main function is the last one (fileDifferences()), it takes no arguments, there is an explanation on how to use this code at the start of it. 
+	Before that, to use this code, please follow these instructions:
+	You should have a few folders of the different versions of the files. 
+	The different versions of the folder need to be named the exact same, except for a number in their name. Their paths should also be the same.
+	The number must start at 1 and go up the more versions you have. If you have 8 versions, the folders need to be named 1 through 8.
+	For example, if version one is "C:\Users\name\Place\Folder name thingy\Version 1\files\" , then version two must be "C:\Users\name\Place\Folder name thingy\Version 2\files\", version 3 must be "C:\Users\name\Place\Folder name thingy\Version 3\files\", and so on, the last version would be named "C:\Users\name\Place\Folder name thingy\Version 8\files\"
+
+	For the code to run, you need to include a few standard libraries- stdio , stdlib , string , Windows and Shlwapi
+	Simply paste these lines at the top of the project (remove the quotes around them when you paste):
+	"#include <stdio.h>
+	#include <stdlib.h>
+	#include <string.h>
+	#include <Windows.h>
+	#include <Shlwapi.h>"
+	Shlwapi is less standard than the rest, so you will probably need to link it directly, you can search how to do
+	that, but simply adding "#pragma comment(lib, "Shlwapi.lib")" under the #include should work (that's what I did)
+
+	Needless to say, this code only works on Windows, do not try to run it on MacOs or Linux
+
+	After you read the instructions in fileDifferences(), to call it just put a call to it in main(), or wherever else you'd like to call it. 
+	If you know what you're doing, feel free to make the strings you need to manually put in into arguments.
+
+*/
+
+
+
+
+typedef struct textPos {
+	int place;
+	int line;
+	int total;
+} textPos;
+static void freeArray(WCHAR** array, int count) 
+{
+	if (array == NULL) {
+		return;
+	}
+	for (int i = 0; i < count; i++) {
+		free(array[i]);
+	}
+	free(array);
+}
+static int getWStringLength(WCHAR* string) {
+	if (string == NULL) {
+		return -1;
+	}
+	int length = 0;
+	WCHAR ch = string[length];
+	while (ch != L'\0') {
+		length++;
+		ch = string[length];
+	}
+	return length;
+}
+static WCHAR** getFileNames(LPCWSTR location, int* counter, WCHAR*** list, WCHAR* prefix, int number, WCHAR* fileEnding) {
+	if (counter == NULL) {
+		printf("error: counter was null\n");
+		return NULL;
+	}
+	if (location == NULL) {
+		printf("error: location was null\n");
+		return NULL;
+	}
+	WIN32_FIND_DATA data;
+	HANDLE fileFind = FindFirstFileW(location, &data);
+	if (fileFind == INVALID_HANDLE_VALUE) {
+		printf("Error couldn't find\n");
+		return NULL;
+	}
+	int folderCount = 0;
+	int folderSize = 8;
+	WCHAR** folderArray = (WCHAR**)malloc(sizeof(WCHAR*) * 8);
+	int count = 0;
+	int size = 16;
+	WCHAR** fileArray;
+	if (list == NULL || *counter <= 0) {
+		fileArray = (WCHAR**)malloc(sizeof(WCHAR*) * size);
+	}
+	else {
+		fileArray = *list;
+		count = *counter;
+		while (size <= count) {
+			size *= 2;
+		}
+	}
+	if (fileArray == NULL) {
+		printf("Critical error\n");
+		return NULL;
+	}
+	WCHAR* temp;
+	do {
+		WCHAR* ext = wcsrchr(data.cFileName, L'.');
+		if (ext && wcscmp(ext, fileEnding) == 0) {
+			temp = (WCHAR*)malloc(sizeof(WCHAR) * MAX_PATH);
+			if (temp == NULL) {
+				printf("error\n");
+				freeArray(fileArray, count);
+				freeArray(folderArray, folderCount);
+				return NULL;
+			}
+			if (prefix == NULL || number <= 0) {
+				fileArray[count] = wcscpy(temp, data.cFileName);
+			}
+			else {
+				wcscpy(temp, prefix);
+				fileArray[count] = wcscat(temp, data.cFileName);
+			}
+			count++;
+			if (count >= size) {
+				size *= 2;
+				fileArray = (WCHAR**)realloc(fileArray, sizeof(WCHAR*) * size);
+				if (fileArray == NULL) {
+					printf("Critical error, size:%d\n", size);
+					freeArray(folderArray, folderCount);
+					return NULL;
+				}
+			}
+		}
+		else {
+			if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+				if (wcscmp(data.cFileName, L".") && wcscmp(data.cFileName, L"..")) {
+					temp = (WCHAR*)malloc(sizeof(WCHAR) * MAX_PATH);
+					if (temp == NULL) {
+						printf("error\n");
+						freeArray(fileArray, count);
+						freeArray(folderArray, folderCount);
+						return NULL;
+					}
+					if (prefix == NULL || number <= 0) {
+						folderArray[folderCount] = wcscpy(temp, data.cFileName);
+					}
+					else {
+						wcscpy(temp, prefix);
+						folderArray[count] = wcscat(temp, data.cFileName);
+					}
+					folderCount++;
+					if (folderCount >= folderSize) {
+						folderSize *= 2;
+						folderArray = (WCHAR**)realloc(folderArray, sizeof(WCHAR*) * folderSize);
+						if (!folderArray) {
+							printf("Critical error, size:%d, folderSIze is %d\n", size, folderSize);
+							freeArray(fileArray, count);
+							return NULL;
+						}
+					}
+				}
+			}
+		}
+	} while (FindNextFileW(fileFind, &data));
+	FindClose(fileFind);
+	for (int i = 0; i < folderCount; i++) {
+		WCHAR subFolder[MAX_PATH];
+		WCHAR ch = location[0];
+		int tempCount = 0;
+		while (ch != L'\0' && ch != L'*') {
+			subFolder[tempCount] = ch;
+			tempCount++;
+			ch = location[tempCount];
+		}
+		ch = (folderArray[i])[0];
+		int keeper = 0;
+		while (ch != L'\0') {
+			subFolder[tempCount] = ch;
+			tempCount++;
+			keeper++;
+			ch = (folderArray[i])[keeper];
+		}
+		subFolder[tempCount] = L'\\';
+		subFolder[tempCount + 1] = L'*';
+		subFolder[tempCount + 2] = L'\0';
+		if (tempCount > MAX_PATH - 3) {
+			printf("WARNING\nWARNING\nWARNING\nWARNING\n");
+		}
+		int preLength = number + getWStringLength(folderArray[i]);
+		WCHAR* pre = (WCHAR*)malloc(sizeof(WCHAR) * (preLength + 2));
+		if (pre == NULL) {
+			printf("memory error\n");
+			exit(1);
+		}
+		if (number != 0 && prefix != NULL) {
+			wcscpy(pre, prefix);
+			pre = wcscat(pre, folderArray[i]);
+		}
+		else {
+			wcscpy(pre, folderArray[i]);
+		}
+		pre[preLength] = L'\\';
+		pre[preLength + 1] = L'\0';
+		fileArray = getFileNames(subFolder, &count, &fileArray, pre, preLength + 1, fileEnding);
+		free(pre);
+	}
+	free(folderArray);
+	*counter = count;
+	if (list != NULL) {
+		*list = fileArray;
+	}
+	return fileArray;
+}
+static textPos areFilesDifferent(const char* file1, const char* file2) {
+	FILE* ptr1 = fopen(file1, "r");
+	if (ptr1 == NULL) {
+		perror("fopen failed1");
+		printf("|%s|\n", file1);
+		textPos t = { -1, -1, -1 };
+		return t;
+	}
+	FILE* ptr2 = fopen(file2, "r");
+	if (ptr2 == NULL) {
+		perror("fopen failed2");
+		printf("|%s|\n", file2);
+		fclose(ptr1);
+		textPos t = { -1, -1, -1 };
+		return t;
+	}
+	int ch1;
+	int ch2;
+	textPos pos = { 1,1,1 };
+	ch1 = fgetc(ptr1);
+	ch2 = fgetc(ptr2);
+	while (ch1 != EOF && ch2 != EOF) {
+		if (ch1 != ch2) {
+			fclose(ptr1);
+			fclose(ptr2);
+			return pos;
+		}
+		pos.total++;
+		pos.place++;
+		if (ch1 == '\n') {
+			pos.line++;
+			pos.place = 1;
+		}
+		ch1 = fgetc(ptr1);
+		ch2 = fgetc(ptr2);
+	}
+	fclose(ptr1);
+	fclose(ptr2);
+	pos.place = 0;
+	if (ch1 != ch2) {
+		return pos;
+	}
+	pos.total = 0;
+	pos.line = 0;
+	return pos;
+}
+static char* makeFilePath(const char* location, int length1,  const WCHAR* name, int length2) {
+	if (location == NULL || name == NULL) {
+		printf("missing information!");
+		return NULL;
+	}
+	if (length1 + length2 > MAX_PATH) {
+		printf("too long");
+		return NULL;
+	}
+	char* result = (char*)malloc(sizeof(char) * MAX_PATH);
+	if (result == NULL) {
+		printf("memory error");
+		return NULL;
+	}
+	int temp;
+	int i = 0;
+	while (i < length1) {
+		if (location[i] == '\0') {
+			break;
+		}
+		result[i] = location[i];
+		i++;
+	}
+	for (int j = 0; j < length2; j++) {
+		if (name[j] == L'\0') {
+			break;
+		}
+		temp = (int)name[j];
+		if (temp <= 0 || temp >= 128) {
+			printf("\'%lc\' = [%d] is too large for a char\n", name[j], temp);
+			free(result);
+			return NULL;
+		}
+		else {
+			result[i] = (char)temp;
+		}
+		i++;
+	}
+	result[i] = '\0';
+	return result;
+
+}
+static int printDifferences(WCHAR** arrayFirst, int size1, char* loc1, int len1, WCHAR** arraySecond, int size2, char* loc2, int len2) {
+	int size = size1;
+	if (size2 > size1) {
+		size = size2;
+	}
+	int place1 = 0;
+	int place2 = 0;
+	int compare;
+	while (place1 < size1 && place2 < size2) {
+		compare = StrCmpLogicalW(arrayFirst[place1], arraySecond[place2]);
+		if (compare == 0) {
+			char* file1 = makeFilePath(loc1, len1, arrayFirst[place1], MAX_PATH - len1 - 1);
+			if (file1 == NULL) {
+				printf("An error has occurred!\n");
+				place1++;
+				place2++;
+				continue;
+			}
+			char* file2 = makeFilePath(loc2, len2, arraySecond[place2], MAX_PATH - len2 - 1);
+			if (file2 == NULL) {
+				printf("An error has occurred!\n");
+				free(file1);
+				place1++;
+				place2++;
+				continue;
+			}
+			textPos diff = areFilesDifferent(file1, file2);
+			if (diff.total == -1) {
+				free(file1);
+				free(file2);
+				return -1;
+			}
+			if (diff.total != 0) {
+				printf("%d: %ls had changes from position %d (line %d place %d)\n", place1, arrayFirst[place1], diff.total, diff.line, diff.place);
+			}
+
+			free(file1);
+			free(file2);
+			place1++;
+			place2++;
+		}
+		if (compare > 0) {
+			printf("%ls new file\n", arraySecond[place2]);
+			place2++;
+		}
+		if (compare < 0) {
+			printf("%d: %ls file deleted\n", place1, arrayFirst[place1]);
+			place1++;
+		}
+
+	}
+}
+static WCHAR* makePathIntoWCHAR(char* path, int length) {
+	int len = MultiByteToWideChar(CP_ACP, 0, path, -1, NULL, 0);
+	if (len == 0) {
+		printf("something went wrong while casting the path from char to WCHAR (1)\n");
+		return NULL;
+	}
+	WCHAR* result = (WCHAR*)malloc(sizeof(WCHAR) * (len + 1));
+	if (result == NULL) {
+		printf("something went wrong while casting the path from char to WCHAR\n");
+		printf("malloc broke, no idea why, not dealing with that (6)\n");
+		return NULL;
+	}
+	if (MultiByteToWideChar(CP_ACP, 0, path, -1, result, len) == 0) {
+		printf("something went wrong while casting the path from char to WCHAR (2)\n");
+		free(result);
+		return NULL;
+	}
+	result[len - 1] = L'*';
+	result[len] = L'\0';
+	return result;
+}
+static int fileDifferences() {
+	/*
+	Once you have the files in place, and have included the libraries, you should edit these first few line accordingly:
+	-'fileEnd' should be the file type you wish to compare, .cs is for C# files
+	-'versionCount' is the number of versions you wish to compare, should be 2 if you are comparing between just two folders
+	-'locationStart' is the part of the path, up until the number
+	or by hovering with the mouse on the start of the string, your IDE should tell you what the length is, but you need to remove one from that number, as it includes a terminating character in its count
+	-'locationEnd' is the part of the path after the number, it DOES NOT INCLUDE THE NUMBER ITSELF
+	Warning: to enter a '\', you need to write down TWO OF THEM \\, if you are copying and pasting from file explorer, make sure to replace each single \ with two \\ !
+
+	That is it, make sure you entered those 6 values correctly and run the function.
+
+	If something doesn't work, and you are %100 that you entered the values correctly, you could try to fix it (hopefully the error messages I left are somewhat helpful), but I wouldn't recommend it.
+	The code was not designed for readability and is very confusing. If you do still want to try, good luck!
+	The function returns 0 if it succeeded and -1 if it failed.
+
+	If you are new to C, to run the function add a "void Main() {...}" function, and put a call to it ("fileDifferences();") inside that.
+	*/
+
+	// Edit these lines:
+	WCHAR* fileEnd = L".cs";
+	int versionCount = 5;
+	char* locationStart = "C:\\Users\\name\\Place\\Folder name thingy\\Version ";
+	char* locationEnd = "\\files\\";
+	// Do not edit anything after this point!
+	
+	
+	char chHelp = locationStart[0];
+	int lengthOfStart = 0;
+	while (chHelp != '\0') {
+		lengthOfStart++;
+		chHelp = locationStart[lengthOfStart];
+	}
+	chHelp = locationEnd[0];
+	int lengthOfEnd = 0;
+	while (chHelp != '\0') {
+		lengthOfEnd++;
+		chHelp = locationEnd[lengthOfEnd];
+	}
+	lengthOfEnd++;
+	if (lengthOfStart + lengthOfEnd >= MAX_PATH) {
+		printf("folder path too long, max is %d, probably a mistaken input\n", MAX_PATH);
+		return -1;
+	}
+	char** locations = (char**)malloc(sizeof(char*) * versionCount);
+	if (locations == NULL) {
+		printf("malloc broke, no idea why, not dealing with that (1)\n");
+		return -1;
+	}
+	int* lengths = (int*)malloc(sizeof(int) * versionCount);
+	if (lengths == NULL) {
+		printf("malloc broke, no idea why, not dealing with that (2)\n");
+		free(locations);
+		return -1;
+	}
+	int* counts = (int*)malloc(sizeof(int) * versionCount);
+	if (counts == NULL) {
+		printf("malloc broke, no idea why, not dealing with that (3)\n");
+		free(locations);
+		free(lengths);
+		return -1;
+	}
+	WCHAR*** arrays = (WCHAR***)malloc(sizeof(WCHAR**) * versionCount);
+	if (arrays == NULL) {
+		printf("malloc broke, no idea why, not dealing with that (4)\n");
+		free(locations);
+		free(lengths);
+		free(counts);
+		return -1;
+	}
+	for (int i = 1; i <= versionCount; i++) {
+		int lengthOfNumber = 1;
+		if (i >= 10) {
+			lengthOfNumber = 2;
+		}
+		if (i >= 100) {
+			printf("Why the hell are you comparing a hundred different versions? At the very least break it up into chunks\n");
+			for (int j = 0; j < i; j++) {
+				free(locations[j]);
+			}
+			free(locations);
+			free(lengths);
+			free(counts);
+			free(arrays);
+			return -1;
+		}
+		locations[i - 1] = (char*)malloc(sizeof(char) * (lengthOfStart + lengthOfNumber + lengthOfEnd + 1));
+		if (locations[i - 1] == NULL) {
+			printf("malloc broke, no idea why, not dealing with that (5)\n");
+			for (int j = 0; j < i; j++) {
+				free(locations[j]);
+			}
+			free(locations);
+			free(lengths);
+			free(counts);
+			free(arrays);
+			return -1;
+		}
+		int place = 0;
+		while (place < lengthOfStart) {
+			(locations[i - 1])[place] = locationStart[place];
+			place++;
+		}
+		int help = i;
+		for (int j = lengthOfNumber - 1; j >= 0; j--) {
+			(locations[i - 1])[place + j] = (char)(help % 10 + (int)'0');
+			help /= 10;
+		}
+		place += lengthOfNumber;
+		help = 0;
+		while (place < lengthOfStart + lengthOfNumber + lengthOfEnd) {
+			(locations[i - 1])[place] = locationEnd[help];
+			help++;
+			place++;
+		}
+		(locations[i - 1])[place] = '\0';
+		lengths[i - 1] = place;
+	}
+	int temp = 0;
+	arrays[0] = getFileNames((LPCWSTR)(makePathIntoWCHAR(locations[0], counts[0])), counts + 0, NULL, NULL, 0, fileEnd);
+	if (arrays[0] == NULL) {
+		for (int j = 0; j < versionCount; j++) {
+			free(locations[j]);
+		}
+		free(locations);
+		free(lengths);
+		free(counts);
+		free(arrays);
+		printf("failed to get file names (0)\n");
+		return -1;
+	}
+	for (int i = 1; i < versionCount; i++) {
+		arrays[i] = getFileNames((LPCWSTR)(makePathIntoWCHAR(locations[i], counts[i])), counts + i, NULL, NULL, 0, fileEnd);
+		if (arrays[i] == NULL) {
+			free(arrays[i - 1]);
+			for (int j = 0; j < versionCount; j++) {
+				free(locations[j]);
+			}
+			free(locations);
+			free(lengths);
+			free(counts);
+			free(arrays);
+			printf("failed to get file names (%d)\n", i);
+			return -1;
+		}
+		printf("\n\n\n\n\nChanges from %d to %d :\n---------------\n\n", i, i + 1);
+		printDifferences(arrays[i - 1], counts[i - 1], locations[i - 1], lengths[i - 1], arrays[i], counts[i], locations[i], lengths[i]);
+		free(arrays[i - 1]);
+	}
+	free(arrays[versionCount - 1]);
+	for (int j = 0; j < versionCount; j++) {
+		free(locations[j]);
+	}
+	free(locations);
+	free(lengths);
+	free(counts);
+	free(arrays);
+	return 0;
+}
