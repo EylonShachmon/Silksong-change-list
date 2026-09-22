@@ -1,0 +1,674 @@
+
+
+Changes from 1.0.28324 to 1.0.28497
+---------------
+
+133: BasicQuestBase.cs had changes from position 822 (line 48 place 9) // Made 'IsUnique' return true instead of false (Line 48)
+
+137: BattleScene.cs had changes from position 612 (line 31 place 3) // maybe Fixed a bug where battles would finish if the player died? (Lines 495-505 in EndBattle())
+
+337: CogMultiHitter.cs had changes from position 2481 (line 97 place 3) // Removed cog double damage (Line 97 in OnTriggerEnter2D())
+
+450: CurrencyObject.cs had changes from position 1000 (line 43 place 43) // Removed a limit to how many currency objects can exist at once if you were playing on a 'Graphics tier Low/veryLow', not 100% what that is (Line 43 in VerifySpawn()).
+
+453: CurrencyObjectLimitRegion.cs had changes from position 1151 (line 58 place 4) // Goes with the above (Lines 58 in GetLimit())
+
+689: FullQuestBase.cs had changes from position 2619 (line 157 place 3) // Added infrastructure for quests to have difference rewards in Act 3 (Lines 155, Lines 300, Lines 603 in OnValidate()). Also added in the new PersistentBoolTest (Line 255, Lines 424)
+
+694: GameCoreOnlineSubsystem.cs had changes from position 72 (line 4 place 7) // Included System.Threading.Tasks and moved a bunch of things to use Task.Run(). Something to do with Threading or whatever (Lines all over)
+
+695: GameManager.cs had changes from position 22696 (line 977 place 3) // Made Queued Achievements award on death, and made some death logic also run for demo stuff (Lines 980 in PlayerDead()). Also made the chance of Skull Tyrent event 30% instead of 20%, and made it not happen while the An Icon of Hope wish is active (likely a test accidentally left in the release version, as in a later patch it replaced with the Silk&Soul wish) (Lines 1600 in TimePasses()). Also Started creating the FixUpSaveState() method (previously empty) (Lines 2300)
+
+801: HealthManager.cs had changes from position 22464 (line 966 place 62) // Removed likely leftover code for other kinds of extracting attacks (like with the needle phial) (Line 967 in TakeDamage()). Also fixed a mistake that could cause delayed hits to not function correctly (Lines 2265 in LagHits())
+
+812: HeroController.cs had changes from position 138316 (line 5858 place 3) // Made the reset-crests-state method public (Line 5858 in ResetAllCrestState()). Also removed Drifter's Cloak override for double jumpting (Lines 10677 in CanDoubleJump())
+
+821: HeroDownAttack.cs had changes from position 7 (line 1 place 7) // Something with damaged an object that is being pogo-ed (Line 15, Line 79 in ContinueBounceTrigger(), Line 95 in OnAttackStarting(), Lines 100 in OnEndedDamage())
+
+930: InteractableBase.cs had changes from position 428 (line 35 place 14) // Added label "Play_Game" (Line 36 in PromptLabels enum)
+
+PersistentBoolTest.cs new file // Instance of the one below specifically for booleans
+
+PersistentItemTest.cs new file // Abstract class for checking if a variable got a value, I think
+
+1286: Platform.cs had changes from position 17202 (line 728 place 300) // Used different method of data retrieval, nothing actually changed (Line 728 in GetMenuAction())
+
+1373: PromptMarker.cs had changes from position 33 (line 2 place 7) // Made prompt labels use the InvariantCulture System.Globalization setting (Line 100 in SetLabel())
+
+1437: RangeAttackGroup.cs had changes from position 4989 (line 231 place 7) // Added a null check for HeroController (Lines 230 in OnCustomDamageTriggerEntered())
+
+1662: SimpleQuestsShopOwner.cs had changes from position 4886 (line 239 place 7) // Something with Shops' item lists, not 100% (Lines 239 in GetItems())
+
+1672: SlideSurface.cs had changes from position 6529 (line 309 place 3) // Added null and inPosition checks for HeroController (Lines 309 in OnTriggerEnter2D(), Line 330 in OnTriggerStay2D())
+
+1732: StartManager.cs had changes from position 2271 (line 74 place 3) // Slightly expanded the scope of a variable for some reason? (Line 74 and 103 in Start())
+
+1806: TimeManager.cs had changes from position 2665 (line 167 place 7) // Replaced a for loop with a for each loop, Replaced '==' with 'Mathf.Approcimately()', bounded time scale to at most 1 unless cheats are enabled (Lines 165 in UpdateTimeScale)
+
+1829: ToolBoomerang.cs had changes from position 1689 (line 93 place 10) // Removed a damage multiplier, was 2.0 by default (Line 92, Line 758 in NailKnockBack(), Line 777 in WeakKnockBack())
+
+1846: ToolItemManager.cs had changes from position 27652 (line 1041 place 26) // Switched system method with custom one, nothing actually changed (Line 1041 in TryReplenishTools())
+
+1922: UnitySourceGeneratedAssemblyMonoScriptTypes_v1.cs had changes from position 639 (line 28 place 32) // Something with Unity's types, probably automatic change, it's just a huge list of numbers I can't know what it means
+
+2002: XBoxConsolePlatform.cs had changes from position 4013 (line 158 place 4) // Set a variable to null after its use is complete (Line 158 in LoadSharedDataAndNotify())
+
+3095: HutongGames.PlayMaker.Actions\HeroStealEnemyCurrency.cs had changes from position 327 (line 19 place 27) // Made the method work for more edge cases (Lines 19 in OnEnter())
+
+HutongGames.PlayMaker.Actions\ShoveFromPlayer.cs new file // Self explanatory
+
+4888: TeamCherry.GameCore\GameCoreRuntimeManager.cs had changes from position 14046 (line 601 place 3) // Locked a few sections (something with threading, prevents data corruption) (Line 601 in CleanUpUsers(), Line 620 in ClearAllUsers())
+
+4891: TeamCherry.GameCore\GameCoreSharedData.cs had changes from position 1370 (line 74 place 3) // Slightly changed save data loading (Lines 74 in LoadData())
+
+5000: ToJ\Mask.cs had changes from position 55 (line 3 place 7) // Made something use the InvariantCulture System.Globalization setting (Lines 444 in SetMaskBoolValueInMaterial())
+
+
+
+
+
+Changes from 1.0.28497 to 1.0.28561
+---------------
+
+695: GameManager.cs had changes from position 44466 (line 1601 place 349) // Made Skull Tyrnet not attack while Silk&Soul is active, instead of during 'An Icon of Hope' (mistake from previous patch) (Lines 1601 in TimePasses())
+
+
+
+
+
+Changes from 1.0.28561 to 1.0.28650
+---------------
+
+133: BasicQuestBase.cs had changes from position 822 (line 48 place 9) // Undid edit from two patch begfore (meaning made 'IsUnique' return false again, instead of true) (Line 48)
+
+240: CameraController.cs had changes from position 5358 (line 261 place 2) // Applied the new DebandEffect (dithering) (Line 261 in ApplyEffectConfiguration())
+
+CancelDoQueuedSaveGame.cs new file // Fsm action that cancels a queued game save
+
+328: ClockworkHatchling.cs had changes from position 2314 (line 131 place 10) // Made attack cooldown a range instead of a single value (Line 131, Line 435 in DoEnableReset(), Line 944 in HitLanded(), Lines 1174 in StartAttackCooldown()). Also added variables for if the cogflies have the poison effect (Lines 247, Line 363 in OnEnable(), Lines 453 in RecordPoisonStatus(), Line 464  and 494 in CheckPoison()). Also Fixed a thing with not attacking properly if an enemy is around when it spawns, I think (Line 325 in Start()).
+
+351: CollectableItemPickup.cs had changes from position 1837 (line 96 place 24) // Separated flag 'activated' into two 'activatedRead' and 'activatedSave' (Lines all over)
+
+360: CollectableRelic.cs had changes from position 1899 (line 85 place 9) // Made 'IsUnique' return true instead of false (Line 85)
+
+391: Constants.cs had changes from position 113 (line 6 place 44) // Added variable for the new dithering (Line 266 and Line 386)
+
+472: DamageEnemies.cs had changes from position 20932 (line 958 place 31) // Made nail damage multipliers (needle strike) combine multiplicatively with other multipliers, instead of additively like the rest (Lines 958 and Lines 1012 in DoDamage()). Also added a method to set silk regen to full (Lines 1527 in SetSilkGenerationFull())
+
+DebandEffect.cs new file // The new dithering option
+
+630: FastTravelCutscene.cs had changes from position 2234 (line 104 place 3) // Added an input blocker (Line 104 in Start(), Lines 201 in OnDisable())
+
+695: GameManager.cs had changes from position 4998 (line 256 place 3) // Added an option for a queued autosave to be delayed by a number of frames (Line 280, Lines 549 in Update(), Lines 4037 in DoQueuedSaveGame()). Also made defeating Nyleth be required for Seth going to Greymoor (Line 1980 in TimePasses()). Also expanded the FixUpSaveState() method (Lines 2352). Also added some sound option, not sure what it is
+
+705: GameSettings.cs had changes from position 879 (line 54 place 2) // Added the dithering setting, and an option to reset advanced video settings
+
+801: HealthManager.cs had changes from position 26304 (line 1073 place 8) // Made Needle Strikes give silk and generally act like normal hits (Line 1073 in TakeDamage())
+
+812: HeroController.cs had changes from position 113647 (line 4951 place 9) // Added a public method to check if Shaman crest is equipped (Lines 4951 in IsShamanCrestEquipped()). Also used the new HeroInvincibilitySource (Line 5282 in TakeDamage(), Line 11041 in CanTakeDamage(), Line 11052 in CanTakeDamageIgnoreInvul(), Line 11854 in LeavingScene()). Also fixed a bug where quickmap could be used while map shouldn't currently exist (Line 7816 in CanQuickMap, Lines 7827 in HasNoMap()). Also fixed a bug where the inventory could be opened during a gameplay cutscene (Line 705 in CanOpenInventory)
+
+HeroInvincibilitySource.cs new file // Self explanatory
+
+902: IHitResponder.cs had changes from position 632 (line 35 place 24) // Made a hit to an enemy consume charges (probably a bug fix) (Line 35)
+
+922: InputHandler.cs had changes from position 3337 (line 155 place 3) // Removed a call to a deleted method from SaveDataUpgradeHandler (Line 155 in Awake())
+
+983: InventoryMapManager.cs had changes from position 3457 (line 161 place 3) // Removed the HasNoMap properties and switched to use the new one add to HeroController (Line 161, Line 247 in MoveSelection(), Line 344 in ZoomIn(), Lines 534 in OnPaneStart(), Line 541 in UpdateKeyPromptState())
+
+1075: LiftControl.cs had changes from position 10364 (line 496 place 24) // Method to stop a lift while you're not inside it (was already an option just added an easier way to call) (Lines 496 in MoveToStopNotInside())
+
+1127: MateriumItem.cs had changes from position 321 (line 14 place 20) // Added an option for an item to be required for completion on Classic mode but not on SteelSoul (Line 15, Line 50)
+
+1137: MemoryOrb.cs had changes from position 4627 (line 230 place 3) // Added a check to make sure the number didn't change while the method ran (Lines 230 in Collect(), Line 235 in CollectRoutine())
+
+1163: MenuSetting.cs had changes from position 261 (line 15 place 3) // Added stuff for the new dithering effect (Line 15, Lines 68 in RefreshValueFromGameSettings(), Lines 173 in UpdateSetting())
+
+1304: PlayerData.cs had changes from position 2155 (line 106 place 23) // Added a flag for if you killed Karmelita after the red memory (Line 1190). Also added a method to check if you did the queen egg delivary (Line 3035 in SlaveDeliveryQuestCompleted()). 
+
+1438: RangeAttacker.cs had changes from position 6573 (line 321 place 2) // Make it stop reacting to the needoline upon disabling (Line 321 in OnDisable())
+
+1480: RestoreSavePointDisplay.cs had changes from position 2888 (line 175 place 7) // Split off navigation to a separate method so it be called again (Line 181 in Init(), Lines 185 in SetUpNavigation(), Line 243 in CreateMore())
+
+1497: SaveDataUpgradeHandler.cs had changes from position 182 (line 10 place 10) // Reworked the whole class (Lines all over)
+
+1534: SceneTransitionZoneBase.cs had changes from position 2975 (line 122 place 3) // Cancels fsms and hero controller reliquishes control on respawn (likely a bug fix) (Lines 122 in Respawn())
+
+1663: SimpleProjectile.cs had changes from position 1213 (line 62 place 2) // Added variables for projectiles to have 2 damage values and choose a random one between them (Lines 62, Lines 149 in Update())
+
+1714: SplineWalker.cs had changes from position 8617 (line 399 place 5) // Set something to happen once fly animation is done (Line 399 in StartFlying())
+
+1831: ToolBoomerang.cs had changes from position 14975 (line 636 place 2) // Made boomerang break upon hitting an enemy if was previously hit by the needle (I think) (Lines 636 in OnDamagedEnemy()). Also removed an effect that previously happened if you hit it with the needle to the right (but not to the left) (Line 705 in Hit()).
+
+1848: ToolItemManager.cs had changes from position 24376 (line 949 place 3) // Removed an unnecessary line (Line 949 in TryReplenishTools). Also reworked a bit the tool replenish logic (Lines 980 in TryReplenishTools()).
+
+1856: ToolPin.cs had changes from position 6395 (line 318 place 17) // Fixed a bug where the wrong variable was null checked (Line 318 in OnCollisionEnter2D()).
+
+1879: TransitionPoint.cs had changes from position 5060 (line 233 place 23) // Made it so you can go through a room transition while binding with shaman crest (Lines 237 in TryDoTransition())
+
+1888: TriggerEnterEvent.cs had changes from position 559 (line 29 place 4) // Added a list of tags to ignore if a collider has them (Lines 29, Lines 248 in OnTriggerEnter2D())
+
+1906: UIManager.cs had changes from position 3031 (line 155 place 9) // Added variable for dithering (Line 175). Also replaced 'VideoMenuOptions videoMenuOptions' with 'MenuScreen advancedVideoMenuScreen' (Line 157)
+
+1924: UnitySourceGeneratedAssemblyMonoScriptTypes_v1.cs had changes from position 640 (line 28 place 33) // Something with Unity's types, probably automatic change, it's just a huge list of numbers I can't know what it means
+
+1954: file VideoMenuOptions.cs has been deleted! // Was not needed anymore
+
+2048: GlobalEnums\MainMenuState.cs had changes from position 161 (line 13 place 2) // Added the new 'advanced video settings' menu (Line 13)
+
+HutongGames.PlayMaker.Actions\SetHeroInvincibility.cs new file // Self explanatory, uses the new HeroInvincibilitySource
+
+4308: HutongGames.PlayMaker.Actions\WalkLeftRight.cs had changes from position 618 (line 37 place 3) // Added sound effect for turning (Line 37, Lines 191 in Turn())
+
+5021: UnityEngine.UI\PauseMenuButton.cs had changes from position 695 (line 38 place 7) // Added an open to disable the button (Lines 38 in OnSubmit(), Lines 85 in OnPointerClick())
+
+
+
+
+
+Changes from 1.0.28650 to 1.0.28714
+---------------
+
+There were no changes to Assembly-CSharp.dll in this update.
+
+
+
+
+
+Changes from 1.0.28714 to 1.0.28891
+---------------
+
+338: CogMultiHitter.cs had changes from position 2730 (line 101 place 3) // Getting hit cancels Hornet's attack and down attak (Lines 101 in OnTriggerEnter2D())
+
+352: CollectableItemPickup.cs had changes from position 7177 (line 400 place 3) // Capped at 2 seconds the wait time for hurt animation to end before picking up an item (Lines 400 in Pickup())
+
+392: Constants.cs had changes from position 113 (line 6 place 44) // Changed Seth's Flea Dodge from 95 to 90 (Line 48)
+
+398: ControllerDetect.cs had changes from position 2731 (line 111 place 52) // Slightly changed condition for controller to appear in the settings (Line 117 in ShowController())
+
+399: ControllerImage.cs had changes from position 40 (line 3 place 7) // Replaced 'name' field with a bit mask (Lines 11)
+
+473: DamageEnemies.cs had changes from position 22843 (line 1012 place 35) // Removed an unneeded condition for the kit upgrade multiplier to be applied (Line 1012 in DoDamage()). Also fixed a method to apply correctly if there are multiple elements active (Line 1430 in ClearPreventDamage())
+
+DeactivateNextFrame.cs new file // Self explanatory
+
+510: DesktopOnlineSubsystem.cs had changes from position 1001 (line 35 place 22) // Added read-only properties "IsSaveStoreMounted" and "IsSharedDataMounted" (default to true) (Lines 35)
+
+511: DesktopPlatform.cs had changes from position 1679 (line 77 place 18) // Added read-obly properties "IsSaveStoreMounted" and "IsSharedDataMounted" (Lines 77). Also changed something about japanese input (Line 119, Lines 494 in GetAcceptRejectInputStyle())
+
+696: GameCoreOnlineSubsystem.cs had changes from position 39 (line 2 place 25) // A bunch of technical changes (Lines all over)
+
+697: GameManager.cs had changes from position 39434 (line 1473 place 26) // Made flowers grow in the Green Prince's death place under certain conditions (Lines 1473 in TimePasses()). Also made it that starting Act 3 removes all tools (Line 2184 in StartAct3()). Also made it so entering the game after exiting it from inside a memory puts you at the temporary save in the memory's entrence (Lines 2324 in LoadedFromMenu()). Also countinued to expand the FixUpSaveState() method (Lines 2334 and Lines 2385). 
+
+803: HealthManager.cs had changes from position 8816 (line 468 place 3) // Changes to Thread Storm (Lines 468, Lines 758 in Update(), Lines 978 in TakeDamage()). Also removed an unneeded condition for the kit upgrade multiplier to be applied (Line 930 in ApplyDamageScaling()). Allowed for a certain damage value to be negative (unclear) (Line 1450 in ApplyExtraDamage(), Line 1460 in ApplyExtraDamage(), those are different methods). Also allowed for a lag hit to be non-lethal (Lines 2187 in DoLagHits())
+
+814: HeroController.cs had changes from position 24714 (line 1265 place 15) // Added a variable to check if Hornet is in pre-position (Line 1265, Line 1771 in SendPreHeroInPosition(), Lines 1777 in SendHeroInPosition(), Line 6955 in ResetHeroInPositionState()). Also limited downwards momentum to 10 (Line 3847 in LateUpdate()). Also created method to check if you can air-dash (Lines 4744 in GetCanAirDashCancel()). Also made it so resetting air movement checks if you're actively double jumping (Line 4760 in ResetAirMoves()). Also created method ResetHeroInPositionState (Lines 6952). Also created a method to check if you are currently 'lost' in the slab (Lines 7856 in IsLostInSlab()). Also created a method to cancel a down attack (Lines 9883 in CancelDownspike())
+
+823: HeroDownAttack.cs had changes from position 1052 (line 33 place 168) // Made a check return false for the curveclaw/curvesickle (Line 33 in OnTriggerEnter2D())
+
+840: HeroSlabCapture.cs had changes from position 392 (line 13 place 60) // Made sure getting captured removes tools (Line 13 in ApplyCaptured())
+
+925: InputHandler.cs had changes from position 39 (line 2 place 25) // Removed System.Collections namespace. Also made a method public (Line 247 in LoadSavedInputBindings()). Also made sure to refresh after updating connected controller (Lines 320 in Update(), Lines 530 in UpdateActiveController()). Also made the game pause upon disconnecting controller (Lines 441 in ControllerDetached()). Also created a method to refresh current controller (Lines 541 in SendRefreshEvent(), Lines 1115 in SetActiveGamepadType()). Also made some changes to SetupGamepadUIInputActions() (Lines 1022). Also expanded the method AddKeyBinding (Lines 1148 in MapKeyboardLayoutFromGameSettings(), Lines 1182 in AddKeyBinding())
+
+927: InputModuleBinder.cs had changes from position 765 (line 37 place 10) // Slight call the when the apply method is called (Line 37, Lines 47 in OnEnable(), lines 53 in OnDisable())
+
+950: InventoryItemButtonPromptData.cs had changes from position 488 (line 28 place 25) // Changed the check for if currently in japanese input style (Line 28)
+
+1061: LagHitOptions.cs had changes from position 43 (line 3 place 7) // Added variable for if the damage is not lethal.
+
+1097: LocalizationProjectSettings.cs had changes from position 311 (line 16 place 3) // Not clear (Lines all over)
+ 
+1243: OpeningSequence.cs had changes from position 1476 (line 70 place 14) // Made the method wait until the opening scene stops loading (Lines 80 in StartAsync())
+
+1256: ParticleDetachReparent.cs had changes from position 142 (line 8 place 2) // Re-did some of the logic and added an option to detach on starting (Lines all over)
+
+1291: Platform.cs had changes from position 1803 (line 111 place 9) // Replaced a delegate, property and event with a method (Line 111, Line 274, Line 329, Lines 720 in GetAcceptRejectInputStyle())
+
+1307: PlayerData.cs had changes from position 2155 (line 106 place 23) // Added a variable for if the flowers grew after the green prince died (Line 2406). Also changed flea dodge Seth score from 95 to 90 (Line 3136)
+
+PlayerDataFixer.cs new file // Self explanatory, although it currently only fixes Silk Spools.
+
+1441: RangeAttacker.cs had changes from position 13996 (line 655 place 34) // Made sure this doesn't ignore invincibility (Lines 655 in OnCustomDamageTriggerEntered())
+
+1442: RangeAttackGroup.cs had changes from position 5190 (line 236 place 29) // Made sure this doesn't ignore invincibility (Line 236 in OnCustomDamageTriggerEntered())
+
+1446: Recoil.cs had changes from position 3320 (line 168 place 7) // Added a few null checks (Lines 202 in RecoilByDirection())
+
+1630: SharedDamagedGroup.cs had changes from position 612 (line 23 place 3) // Added an OnDisable (Lines 23), made another version of a method (Lines 30 in PreventDamage()), and made a method private (Line 40 in ClearDamagePrevented())
+
+1701: SpecialTypes.cs had changes from position 184 (line 14 place 14) // Made a type for Thread Storm (Line 15)
+
+1736: StartGameEventTrigger.cs had changes from position 7 (line 1 place 7) A bunch of technical changes (Lines all over)
+
+1770: Sweep.cs had changes from position 2885 (line 99 place 16) // Added null check (Lines 99 in GetBounds())
+
+1801: TimedActivator.cs had changes from position 426 (line 25 place 10) // A bunch of things related to 'Activation ID' (Lines all over)
+
+1851: ToolItemManager.cs had changes from position 26783 (line 1011 place 7) // Added a check for if a tool refill is free (lines 1011 in TryReplenishTools()). Also added an option for an automatically equipped crest to not remove the tools off the current one (Line 1242 in AutoEquip())
+
+1907: UIButtonSkins.cs had changes from position 10784 (line 488 place 5) // Removed images for buttons 'Plus' and 'Minus' buttons on Nintendo controllers (Lines 487 in GetButtonSkinFor())
+
+1909: UIManager.cs had changes from position 46849 (line 1973 place 4) // Made key bindings update when closing the keyboard settings menu (Line 1973 in HideCurrentMenu())
+
+1917: UISelectionList.cs had changes from position 558 (line 27 place 17) // Inverted flag "isInactive" into "isActive" (Line 27, Line 79 in Update(), Line 118 in MoveSelection(), Line 173 in SetActive())
+
+1927: UnitySourceGeneratedAssemblyMonoScriptTypes_v1.cs had changes from position 639 (line 28 place 32) // Something with Unity's types, probably automatic change, it's just a huge list of numbers I can't know what it means
+
+2006: XBoxConsolePlatform.cs had changes from position 47 (line 3 place 7) // Changed the check for if currently in japanese input style (Line 108, Lines 360 in GetAcceptRejectInputStyle())
+
+2294: HutongGames.PlayMaker.Actions\AutoEquipCrest.cs had changes from position 306 (line 15 place 70) // Changed a line to fit with chnages in ToolItemManager, nothing actually changed
+
+2295: HutongGames.PlayMaker.Actions\AutoEquipCrestV2.cs had changes from position 440 (line 22 place 70) // Changed a line to fit with chnages in ToolItemManager, nothing actually changed
+
+2296: HutongGames.PlayMaker.Actions\AutoEquipCrestV3.cs had changes from position 479 (line 25 place 67) // Changed a line to fit with chnages in ToolItemManager, nothing actually changed
+
+HutongGames.PlayMaker.Actions\AutoEquipCrestV4.cs new file // Unlike the other three, this action has an option to not remove the tools from the crest you had before
+
+HutongGames.PlayMaker.Actions\GetIsHeroInputBlocked.cs new file // Self explanatory
+
+HutongGames.PlayMaker.Actions\ListenForTauntV2.cs new file // Self explanatory
+
+4403: InControl\PlayerAction.cs had changes from position 2895 (line 134 place 7) // Separated off some of the logic into its own method, and reworked it (Lines 134 in AddDefaultBinding(), and Lines 148 in TryAddBinding())
+
+4593: InControl.NativeDeviceProfiles\PlayStation5BluetoothMacNativeProfile.cs had changes from position 506 (line 15 place 42) // Added another type(I think?) of input device (Lines 15)
+
+4594: InControl.NativeDeviceProfiles\PlayStation5BluetoothWindowsNativeProfile.cs had changes from position 517 (line 15 place 42) // Added another type(I think?) of input device (Lines 15)
+
+4595: InControl.NativeDeviceProfiles\PlayStation5USBMacNativeProfile.cs had changes from position 500 (line 15 place 42) // Added another type(I think?) of input device (Lines 15)
+
+4596: InControl.NativeDeviceProfiles\PlayStation5USBWindowsNativeProfile.cs had changes from position 511 (line 15 place 42) // Added another type(I think?) of input device (Lines 15)
+
+4633: InControl.NativeDeviceProfiles\SDLPlayStation5NativeProfile.cs had changes from position 208 (line 9 place 18) // Added another type(I think?) of input device (Lines 15)
+
+4640: InControl.NativeDeviceProfiles\SwitchProControllerMFiNativeProfile.cs had changes from position 949 (line 31 place 40) // Swapped the mapping of buttons A<->B, and X<->Y (Lines 31)
+
+
+
+
+
+Changes from 1.0.28891 to 1.0.29242
+---------------
+
+22: ActivateColliderWhenNotInside.cs had changes from position 7 (line 1 place 7) // Expanded checks and changed logic a bit (Lines all over)
+
+137: BattleScene.cs had changes from position 7898 (line 395 place 3) // Made method DoCheckEnemies public instead of private (Line 395)
+
+152: BindOrbHudFrame.cs had changes from position 13390 (line 595 place 4) // Used a different flag from HeroController, nothing actually changed (Lines 595 in WarriorCrestRoutine())
+
+161: BlackThreadState.cs had changes from position 5962 (line 272 place 8) // Many changes, unclear, seems like nothing actually changed (Lines 272, Lines 888 in ResetThreaded()). Also made sure an enemy can't do an attack while dead (Line 1042 in DoAttack())
+
+162: BlackThreadStrand.cs had changes from position 8876 (line 404 place 5) // Moved method call further inside a certain logic branch (Lines 403 in BehaviourRoutine()). Also made a black-threaded enemy stop raging while Needolin is played (Lines 428 in BehaviourRoutine()). 
+
+207: BouncePod.cs had changes from position 5084 (line 247 place 18) // Added an OnDisable (Lines 247)
+
+240: CameraController.cs had changes from position 4644 (line 252 place 24) // Replaced NewCameraNoise effect with FastNoise effect (Lines 252 in ApplyEffectConfiguration()). Also changed how the dithering effect is enabled (Lines 261 in ApplyEffectConfiguration()).
+
+303: CheatManager.cs had changes from position 4277 (line 221 place 16) // Added flag for if damage is frost (Line 221)
+
+329: ClockworkHatchling.cs had changes from position 87 (line 4 place 13) // Added audio source for flying sound (Line 156, Lines 995 in HitLanded(), Lines 1098 in UnEquippedRoutine()). Also added flag 'willBreak' (Line 255, Line 376 and Lines 386 in OnEnable(), Line 397 and Lines 409 in OnDisable(), Lines 927 in StartHitLanded(), Line 974 and Lines 999 in HitLanded(), Line 1102 in UnEquippedRoutine(), Lines 1168 in OnHeroLeavingScene(), Line 1185 in GameStateChange(), Lines 1191 in OnPreHeroInPosition(), Line 1202 in OnHeroInPosition()). Also added something about removing effects event (Line 308 in Awake(), Lines 1040 in ClearEffectInstant(), Lines 1175 in OnBeforeFinishedSceneTransition()). Also made sure the Cogfly don't disappear when loading a new scene (Lines 366 in Start()). 
+
+391: ConfigManager.cs had changes from position 257 (line 10 place 16) // Removed Propeties 'IsNativeInputEnabled' and 'IsNoiseEffectEnabled' (Lines all over)
+
+392: Constants.cs had changes from position 112 (line 6 place 43) // Separated dithering from noise (Lines 266, Lines 388)
+
+414: Corpse.cs had changes from position 2055 (line 114 place 15) // Separated OnCorpseBegin into its own method (Line 114, Line 216 in 
+
+466: CustomSceneManager.cs had changes from position 12163 (line 508 place 25) // Made slight changes to how the game applies saturation to a scene (Lines 508 and Line 525 and Line 565 in UpdateAppearanceRegion())
+ 
+475: DamageHero.cs had changes from position 2895 (line 133 place 3) // Created a HasSet for Damages, not 100% sure (Line 133, Line 229 in OnDestroy(), Lines 280 in ToggleDamage(), Lines 294 in ResetRecordedDamager())
+
+513: DesktopSaveRestoreHandler.cs had changes from position 88 (line 4 place 23) // Something to do with threading (Line 4, Lines 133 in FetchRestorePoints())
+
+541: Downspike.cs had changes from position 2540 (line 116 place 3) // Added public method CancelAttackAndDamage() (Lines 116)
+
+584: EnemyJournalRecord.cs had changes from position 788 (line 48 place 2) // Added option for entries to have alternative notes (Lines 48, Lines 84)
+
+605: EventRegisterEvents.cs had changes from position 3259 (line 67 place 29) // Added event 'ClearEffectsInstant' (Line 67)
+
+643: FetchDataRequest.cs had changes from position 40 (line 2 place 26) // Something to do with threading (Lines all over)
+
+698: GameManager.cs had changes from position 65314 (line 2191 place 3) // Noted in PlayerData if freed Vaultborns by starting act 3 (Lines 2191 in StartAct3()). Also made leaving a memory clear all effects on Hornet (Line 2307 in EnteredNewMapZone()). Also slightly expanded FixUpSaveState() (Lines 2399). Also made sure getting 9 lifeblood masks causes you to be plasmified (Lines 2589 in AddBlueHealthQueued()). Also something with loading file data (Line 4733 in GetSaveStatsForSlot())
+
+708: GameSettings.cs had changes from position 886 (line 54 place 9) // Separated dithering from noise (Lines 54, Lines 152 in LoadVideoSettings(), Lines 164 in SaveVideoSettings(), Lines 186 in ResetAdvancedVideoSettings())
+
+804: HealthManager.cs had changes from position 2407 (line 140 place 4) // Slightly redid snitch pick logic, not much changed (Lines 137, Lines 2340 in DoStealHit(), Line 2346 in StealCurrency() -Renamed from "TrySteal()"-). Also made the time an enemy 'remembers' it was hit by Rune Rage 2 seconds instead of 0.75 seconds (Line 465). Also increased Thread Storm damage from hit 5+ (Lines 988 in TakeDamage()). Also changed a check to use a method (Line 1570 in Die()). Also made HealToMax() set isDead to false (Line 2122)
+
+815: HeroController.cs had changes from position 4654 (line 201 place 20) // Separated Rage mode timer into Rage effect and Rage heal (Lines 201, Lines 2442 in Update(), Lines 5469 in TakeDamage(), Lines 5864 in NailHitEnemy(), Line 5927 in ResetWarriorRageEffect(), Lines 5935 in ResetWarriorCrestState(), Line 6225 in BindCompleted()). Also added a property IsStunned (Line 1458, Line 7259 in HazardRespawnReset(), Line 7729 in RegainControl(), Line 11973 in LeavingScene()). Also something about the map when changing config (Line 1848 in SetConfigGroup()). Also made conveyors not affect hornet while backsprinting or backscuttling (Line 3248 in FixedUpdate()). Also made method EnterLifebloodStateQuick() (Lines 3796). Also added check if you're transitioning between scenes in a couple places (Line 5160 in DoSpecialDamage(), Line 11157 in CanTakeDamage()). Also made sure Fractured Mask wouldn't break while taking damage from the first attack in a combo (Line 5462 in TakeDamage()). Also created method CheckDeathCatch() to make you are dead if you're supposed to be (Lines 5645). Also made frost damage timer reset upon taking any damage (Line 5717 in HeroDamaged()). Also added checks for if you're dead in a couple places (Lines 9156 in CanExitNoInput(), Lines 9606 in StartRecoil(), Lines 9998 in CancelDamageRecoil()). Also added public method CancelDownspikeAndDamage() (Lines 9930). Also added public method CancelDamageRecoilSimple() (Lines 10011). Also fixed a bug where CanTakeDamageIgnoreInvul() did not ignore parry invulnerability frames (Line 11166). Created variations of ClearEffects(), one that acts instantly and one that does not reset lifeblood overdosing (Lines 11986 in ClearEffectsInstant() and Lines 11998 in ClearEffectsLite())
+
+824: HeroDownAttack.cs had changes from position 2987 (line 119 place 30) // Made down attacking not cause hornet to bounce if the new stunned effect is active (Line 119 in OnHitResponded())
+
+926: InputHandler.cs had changes from position 1439 (line 73 place 10) // Added a static variable for the previous input type (japanese/non-japanese) (Line 73). Also made the flag for if the controller is pressed static (Line 99, Lines 1028 and Line 1048 in SetupGamepadUIInputActions()). Also made it 'try again' if the game can't recognise the input device (Lines 1111 in SetActiveGamepadType())
+
+951: InventoryItemButtonPromptData.cs had changes from position 190 (line 12 place 2) // Added a flag 'DisabledWhenBareInventory', probably for turning off items when the cloakless crest is equipped (Line 12)
+
+952: InventoryItemButtonPromptDisplay.cs had changes from position 1086 (line 50 place 49) // Used the new flag from the above change (Line 50 in Show())
+
+982: InventoryItemToolBase.cs had changes from position 2720 (line 137 place 33) // Made an item's extra description only get added if it is unlocked (Line 137 in ItemDataUpdated())
+
+1047: JsonSharedData.cs had changes from position 316 (line 16 place 3) // Reworked most of the class, safer for unexpected fails now (Lines all over)
+
+1098: LocalizationProjectSettings.cs had changes from position 1377 (line 60 place 9) // Made two methods CanPullSheet() and CanPullText() use 'override' instead of 'virtual', nothing actually changed (Line 60, Line 77)
+
+1115: MapMarkerMenu.cs had changes from position 6828 (line 319 place 57) // Made the cancel button be deactivated only if the menu is in a 'fadeGroup', unclear (Line 319 in Close())
+
+1135: MazeController.cs had changes from position 1180 (line 66 place 10) // Redid some of the logic (Line 66, Lines all over in LinkDoors(), Lines all over in SubscribeDoorEntered(), Line 452 in ResetSaveData())
+
+1167: MenuSetting.cs had changes from position 42 (line 3 place 1) // Added menu setting type for camera noise (Line 17, Lines 73 in RefreshValueFromGameSettings(), Lines 178 in UpdateSetting())
+
+1168: MenuStyles.cs had changes from position 2811 (line 145 place 44) // Set an object active before deactivating it, not clear (Lines 145 in Awake())
+
+1204: NativeInputModuleManager.cs had changes from position 723 (line 52 place 20) // Set a variable to false (Line 52 in OnEnable())
+
+1270: PerformanceHud.cs had changes from position 18008 (line 734 place 157) // Made a shadow 10 wider (Line 734 in LabelWithShadowRight())
+
+1292: Platform.cs had changes from position 3462 (line 200 place 22) // Added propery 'UseAsyncSaveFileLoad' (gives false by default) (Line 200)
+
+1308: PlayerData.cs had changes from position 2154 (line 106 place 22) // Added a field to keep which was the last delivary quest done (Line 1705), Added a flag if freed Vaultborns by starting act 3 (Line 2095), Added flag 'DidEnterPreviousMazeDoor' (Line 2666)
+
+1315: PlayerDataFixer.cs had changes from position 296 (line 9 place 4) // Reworked some of the logic
+
+1412: QuestType.cs had changes from position 955 (line 47 place 2) // Something about putting a completed quest into PlayerData (Line 47, Lines 95 in OnQuestCompleted())
+
+1443: RangeAttacker.cs had changes from position 14418 (line 668 place 3) // Made 'custom damage' cancel Hornet's attack and down attack (Lines 668 in OnCustomDamageTriggerEntered())
+
+1444: RangeAttackGroup.cs had changes from position 5474 (line 244 place 3) // Made 'custom damage' cancel Hornet's attack and down attack (Lines 244 in OnCustomDamageTriggerEntered())
+
+1485: RestoreSavePointDisplay.cs had changes from position 3216 (line 192 place 3) // Added some null check nonsense (Lines 191 in SetUpNavigation()). Also made it so selecting left or right does the same as selecting up (Lines 436 in SetBackButtonNavigation()). Also made it so selecting down goes down the list (Line 441 in SetBackButtonNavigation())
+
+1486: RestoreSaveSelectionButton.cs had changes from position 1647 (line 72 place 7) // Goes together with the changes mentioned above (Lines 72 in OnMove())
+
+1503: SaveDataUtility.cs had changes from position 2266 (line 87 place 54) // Unclear (Lines 87 in SerializeSaveData())
+
+1539: SceneTransitionZoneBase.cs had changes from position 1312 (line 62 place 57) // Added a check that Hornet is not currently dead and set the new scene transitioning flag to true (Lines 62 in Awake())
+
+1669: SimpleQuestsShopOwner.cs had changes from position 1875 (line 92 place 2) // Made it so a repeatable quest won't reappear immediatly after it is completed (Lines 92, Lines 158 and Lines 202 and Lines 226 in GetItems())
+
+1679: SlideSurface.cs had changes from position 3663 (line 177 place 2) // Created method OnHeroInterrupted() and made it activate in the cancel events (Lines 177 in Awake(), Lines 309). Also separated the cancel logic to its own method (Line 313 in OnHeroInterrupted(), Line 5112 in Detach(), Lines 521 in Cancel())
+
+TextHeightYFollower.cs new file // Somewhat self explanatory
+
+1791: TextMeshProContainerFitter.cs had changes from position 7 (line 1 place 7) // Added an action to call on updating height (Likely utilising the new TextHeightYFollower) (Line 19, Line 76 in UpdateValues())
+
+1836: ToolBoomerang.cs had changes from position 15373 (line 657 place 3) // Made sure to disable the damage collider once it breaks (Line 657 in Break())
+
+1911: UIManager.cs had changes from position 3493 (line 177 place 2) // Added stuff for the newly separated camera noise setting (Line 177, Line 1791 in DefaultAdvancedVideoMenuSettings(), Line 1870 in RefreshVideoControls()). Also disabled returning to main menu while pausing or save quitting is disabled (Lines 1576 in ReturnToMainMenu())
+
+1929: UnitySourceGeneratedAssemblyMonoScriptTypes_v1.cs had changes from position 638 (line 28 place 31) // Something with Unity's types, probably automatic change, it's just a huge list of numbers I can't know what it means
+
+2033: GlobalEnums\DamagePropertyFlags.cs had changes from position 173 (line 14 place 13) // Added flag for damage done mid combo
+
+2070: GlobalSettings\Gameplay.cs had changes from position 2712 (line 137 place 15) // Added a 'grace time' for Beast crest's Rage mode (Line 137, Line 544)
+
+HutongGames.PlayMaker.Actions\ClearHeroEffectsInstant.cs new file // Using the new ClearEffectsInstant() in HeroController
+
+HutongGames.PlayMaker.Actions\ClearHeroEffectsLite.cs new file // Using the new ClearEffectsLite() in HeroController
+
+2525: HutongGames.PlayMaker.Actions\DamageHeroDirectly.cs had changes from position 502 (line 28 place 4) // Added a check death using the new CheckDeathCatch() in HeroController (Line 28 in OnEnter())
+
+2526: HutongGames.PlayMaker.Actions\DamageHeroDirectlyV2.cs had changes from position 898 (line 47 place 4) // Added a check death using the new CheckDeathCatch() in HeroController (Line 47 in OnEnter())
+
+HutongGames.PlayMaker.Actions\GamepadActionBase.cs new file // Self explanatory
+
+HutongGames.PlayMaker.Actions\GamepadButtonComboEvents.cs new file // Helps with detecting button press combos while using a controller
+
+HutongGames.PlayMaker.Actions\GamepadButtonEvents.cs new file // Helps with detecting button presses while using a controller
+
+HutongGames.PlayMaker.Actions\GamepadGetButtonValues.cs new file // Gets current state of a controller button
+
+HutongGames.PlayMaker.Actions\GamepadReadButtonValue.cs new file // Self explanatory
+
+HutongGames.PlayMaker.Actions\GamepadReadStickValue.cs new file // Self explanatory
+
+HutongGames.PlayMaker.Actions\GamepadStickEvents.cs new file // Helps with matching controller stick movements into actions
+
+HutongGames.PlayMaker.Actions\MatchAudioSourceTime.cs new file // Supposed to make an audio clip's timer match the one of another, due to a mistake it does nothing
+
+HutongGames.PlayMaker.Actions\PlayerInputActionBase.cs new file // Self explanatory
+
+HutongGames.PlayMaker.Actions\PlayerInputButtonEvents.cs new file // Helps with linking button presses with game events
+
+HutongGames.PlayMaker.Actions\PlayerInputCanceledEvent.cs new file // Links a canceled input to a game event
+
+HutongGames.PlayMaker.Actions\PlayerInputEnableAction.cs new file // Self explanatory
+
+HutongGames.PlayMaker.Actions\PlayerInputEnableActionMap.cs new file // Self explanatory
+
+HutongGames.PlayMaker.Actions\PlayerInputGetBool.cs new file // Self explanatory
+
+HutongGames.PlayMaker.Actions\PlayerInputGetFloat.cs new file // Self explanatory
+
+HutongGames.PlayMaker.Actions\PlayerInputGetMoveVector.cs new file // Self explanatory
+
+HutongGames.PlayMaker.Actions\PlayerInputGetVector2.cs new file // Self explanatory
+
+HutongGames.PlayMaker.Actions\PlayerInputGetVector2AsVector3.cs new file // Self explanatory
+
+HutongGames.PlayMaker.Actions\PlayerInputPerformedEvent.cs new file // Links a game event to happen when an input action is performed (unclear)
+ 
+HutongGames.PlayMaker.Actions\PlayerInputTriggeredEvent.cs new file // Self explanatory
+
+HutongGames.PlayMaker.Actions\PlayerInputUpdateActionBase.cs new file // Self explanatory
+
+HutongGames.PlayMaker.Actions\ResetRecordedDamageHero.cs new file // Self explanatory
+
+HutongGames.PlayMaker.Actions\SetDamageHeroAndRecord.cs new file // Self explanatory
+
+HutongGames.PlayMaker.Actions\SetHeroStunned.cs new file // Sets the new IsStunned property in HeroController
+
+3712: HutongGames.PlayMaker.Actions\SetMeshRendererEveryFrame.cs had changes from position 709 (line 34 place 25) // Set variable to null on exit (Lines 34 in OnExit())
+
+4376: InControl\InputManager.cs had changes from position 4780 (line 195 place 21) // Used the new 'NewUnityInputDeviceManager' instead of 'UnityInputDeviceManager' (Line 195 in SetupInternal())
+
+InControl\NewUnityInputDevice.cs new file // Not clear
+InControl\NewUnityInputDeviceManager.cs new file // Not clear
+4414: InControl\PS4SimpleInputDeviceManager.cs had changes from position 466 (line 23 place 3) // Expanded the check for if the input device is connected (Lines 23 in Update())
+
+4416: InControl\PS5SimpleInputDeviceManager.cs had changes from position 466 (line 23 place 3) // Expanded the check for if the input device is connected (Lines 23 in Update())
+
+4443: InControl\UnityKeyboardProvider.cs had changes from position 20 (line 2 place 1) // Replaced 'KeyCode' with 'UnityEngine.InputSystem.Key' (Lines all over)
+
+4444: InControl\UnityMouseProvider.cs had changes from position 73 (line 4 place 1) // Replaced method call to 'SafeGetMouseButton()' with 'isPressed' field (Lines 41 in Update())
+
+4902: TeamCherry.GameCore\GameCoreSharedData.cs had changes from position 2015 (line 105 place 7) // Made sure it does not try saving while the data is not loaded (Lines 105 in Save())
+
+5022: UnityEngine.UI\MenuOptionHorizontal.cs had changes from position 743 (line 42 place 3) // Added checks for if the application is currently running (Line 42 in Awake(), Line 51 in OnEnable(), Line 61 in OnDisable())
+
+5030: UnityEngine.UI\RestoreSaveButton.cs had changes from position 1556 (line 72 place 40) // Made max for loading before it times out 20 seconds instead of 10 (Line 72)
+
+
+
+
+
+Changes from 1.0.29242 to 1.0.29315
+---------------
+
+312: CheckIsCharacterGrounded.cs had changes from position 1561 (line 87 place 4) // Not clear
+
+392: Constants.cs had changes from position 113 (line 6 place 44) // Added input type keys (I think) "NativeInput", "XInput", "AppleMFi" (Lines 448)
+
+708: GameSettings.cs had changes from position 1009 (line 61 place 2) // Added flags for the new input types (Lines 61). Also added method LoadControllerSettings() (Lines 147). Also added method SaveGameControllerSettings() (Lines 155). Also added method ResetControllerSettings() (Line 107, Lines 164)
+
+815: HeroController.cs had changes from position 116609 (line 5113 place 3) // Added argument 'allowFracturedMaskBreak' to method DoSpecialDamage() (Line 5163, Lines in every place that calls this method). Also added another version of CheckTouchingGround() (Line 10666 in CheckTouchingGround(), Lines 10669 in CheckTouchingGround(), those are different methods)
+
+928: InputModuleBinder.cs had changes from position 1116 (line 48 place 4) // Added null checks for InputHandler (Line 48 in OnEnable(), Lines 68 in BindAndApplyActions()) 
+
+1047: JsonSharedData.cs had changes from position 2519 (line 114 place 4) // Added a check for if a file does not exist (Lines 114 in WriteAllBytesSafe())
+
+MenuButtonAdvancedControllerListCondition.cs new file // Unclear
+
+1158: MenuButtonList.cs had changes from position 511 (line 27 place 3) // Unclear (Lines 27, Lines 42, Lines 143 in SetupActive())
+
+1167: MenuSetting.cs had changes from position 490 (line 24 place 19) // Added options for new input types (Lines 25, Lines 97 in RefreshValueFromGameSettings(), Lines 222 in UpdateSetting())
+
+1204: NativeInputModuleManager.cs had changes from position 103 (line 6 place 10) // Reworked the whole class, now helps set up things with the new input types
+
+1292: Platform.cs had changes from position 5012 (line 261 place 17) // Added something to simplify Vsync code, nothing actually changed (Lines 261, Lines 699 in SetTargetFrameRate(), Line 715 in RecordFrameRate())
+
+1912: UIManager.cs had changes from position 3623 (line 183 place 9) // Added fields for advanced contoller settings and for the new input types (Lines 183, Line 715 in UIGoBack(), Lines 1342 in GoToControllerMenu(), Lines 2028 in HideCurrentMenu()). Also created a few methods for the advanced controller settings menu (Lines 791 in UIGoToAdvancedControllerMenu(), Lines 1358 in GoToAdvancedControllerMenu(), Lines 1757 in ApplyAdvancedControllerMenuSettings(), Lines 1835 in DefaultAdvancedGamepadMenuSettings(), Line 1861 in LoadStoredSettings(), Lines 1886 in LoadAdvancedControllerSettings(), Lines 1948 inRefreshAdvancedGamepadControls())
+
+1930: UnitySourceGeneratedAssemblyMonoScriptTypes_v1.cs had changes from position 639 (line 28 place 32) // Something with Unity's types, probably automatic change, it's just a huge list of numbers I can't know what it means
+
+2028: GlobalEnums\CancelAction.cs had changes from position 368 (line 21 place 8) // Added option ApplyAdvancedControllerSettings (Line 22)
+
+2053: GlobalEnums\MainMenuState.cs had changes from position 103 (line 9 place 2) // Added option ADVANCED_GAMEPAD_MENU (Line 9)
+
+4450: InControl\TestInputManager.cs had changes from position 362 (line 19 place 3) // Replaced access method to vsync setting, nothing actually changed (Line 19)
+
+5051: UnityEngine.UI\MenuOptionHorizontal.cs had changes from position 538 (line 29 place 2) // Added option to have buttons refresh once something changes (Line 29, Lines 210 in UpdateSetting())
+
+5055: UnityEngine.UI\MenuSelectable.cs had changes from position 5346 (line 264 place 21) // Added the new advanced controller menu to something (Line 264 in OnCancel())
+
+
+
+
+
+Changes from 1.0.29315 to 1.0.29909
+---------------
+
+215: BreakableHolder.cs had changes from position 2324 (line 131 place 4) // Something about a PersonalObjectPool component (Lines 134 in Awake()). Also added a 'flingMultiplier' (Lines all over the Hit() methods). Also changed how the items get thrown off on a 'heavy' hit (Line 213 in DoHit(), Lines 253 in DoHit(), those are different methods). 
+
+240: CameraController.cs had changes from position 11179 (line 492 place 7) // Added a check related to the new option to Silksoar between screens (Line 492 in LockToArea())
+
+243: CameraLockArea.cs had changes from position 720 (line 40 place 2) // Added a variable for if to ignore silk soaring (Lines 40, Line 80)
+
+289: ChangeFontByLanguage.cs had changes from position 420 (line 28 place 25) // Added things for the newly added traditional chinese translation (using ZH_TW code) (Lines all over)
+
+294: ChangeTextFontScaleOnHandHeld.cs had changes from position 579 (line 34 place 10) // Added flag 'onlyApplyLanguageOverrides', something to do with font size (Line 34, lines 148 in SetScale())
+
+302: CheatCodeListener.cs had changes from position 1623 (line 89 place 3) // Made catching the correct input less likely to fail I think (Lines 92 in Update())
+ 
+303: CheatManager.cs had changes from position 1765 (line 116 place 10) // Added field 'menuCancelQueued' (Line 170)
+
+345: CollectableItemBasic.cs had changes from position 360 (line 16 place 2) // Added optional field 'appendDescription' (Lines 15, Lines 58 in GetDiscription())
+
+352: CollectableItemPickup.cs had changes from position 3517 (line 200 place 2) // Activated events upon disable (Line 200 in OnDisable())
+
+512: DesktopPlatform.cs had changes from position 4428 (line 176 place 3) // Added a few null checks and replaced InvokeNext() with InvokeSafe() (Lines all over). Also removed a line setting UseFieldInfoCache to false (Line 176 in Awake())
+
+524: DialogueYesNoBox.cs had changes from position 5708 (line 205 place 301) // Added a Display type 'WillGetItem' (as oppose to the existing 'RequiredItems') (Line 205 and Line 238 and Lines 256 and Lines 275 in Open(), Lines 411 in SetupWillGetItemDisplay())
+
+533: DisplayFrozenCamera.cs had changes from position 2014 (line 115 place 4) // Not clear (Line 115 in Freeze())
+
+572: EnemyDeathEffectsProfile.cs had changes from position 2131 (line 70 place 17) // Something about deleting game objects (Line 70 in SpawnEffects())
+
+EnsureSnapshotRestore.cs new file // Something with audio, unclear
+
+604: EventRegister.cs had changes from position 928 (line 47 place 10) // Removed unnecessary variable already existing in the base class (Line 46, Line 119 in Awake(), Line 190 in SwitchEvent())
+
+677: ForceCameraAspect.cs had changes from position 1653 (line 81 place 3) // Split off some of the logic to a helper method, nothing actually changed (Lines 81 in AutoScaleViewport(), Lines 101 in AutoScaleViewportShared())
+
+678: ForceCameraAspectLite.cs had changes from position 587 (line 41 place 3) // Used the new helper method from above instead of its own, nothing actually changed (Lines 42 in AutoScaleViewport())
+
+698: GameManager.cs had changes from position 59507 (line 1998 place 61) // Replaced a Collectables.GetData() call with checking a PlayerData 'has picked up' flag for checking if Hunter's Heart was collected, fixing a bug where Gilly wouldn't react correctly if it was used before talking to her (Line 1998). Also supressed the silk refill sound when getting silk after exiting a dream (Line 2298 and Line 2308 in EnteredNewMapZone()). Also clears Lifeblood masks when exiting a dream (Lines 2312 in EnteredNewMapZone()). Also something about making sure the plasmium overdosing effect is applied (Lines 2602 in AddBlueHealthQueued()). Also created a public method GetSceneManagerComponent() (Lines 3796)
+
+704: GamePadAudio.cs file deleted // Didn't actually do anything
+
+708: GameSettings.cs had changes from position 2670 (line 130 place 3) // Something about saving the hud scale, not clear (Lines 130 in SaveGameOptionsSettings()
+
+716: GenericFieldAccessOptimiser.cs file deleted // Unclear, doesn't seem to have been used but it was a couple hunder lines of code
+
+804: HealthManager.cs had changes from position 2407 (line 140 place 4) // Added a flag to make an attack not steal rosaries (Line 140, Line 142 and Line 145 in StealLagHit(), Lines 2344 in DoStealHit()). Also added a fatal damage event on death (Line 1663 in Die())
+
+809: HeroAnimationController.cs had changes from position 35585 (line 1571 place 4) // Something about silk soar fall (Line 1571 in StopControl())
+
+815: HeroController.cs had changes from position 10056 (line 496 place 3) // Added flag 'queuedLifeBloodState' (Line 496, Lines 3801 in QueueLifeBloodStateQuick(), Line 3811 in EnterLifebloodStateQuick(), Lines 4847 in HitMaxBlueHealth()). Also made sure to cancel active FSMs before starting a silk skill (Line 3623 in ThrowTool()). Also replaced a switch expression with a switch statement, nothing actually changed (Lines 5288 in TakeDamage()). Also removed the override for void attacks to always do 2 damage (the still do 2, but now stuff like barbed bracelet can increase it) (Line 5463 in TakeDamage()). Also gave ResetAllCrestStateMinimal() an option to not reset Hunter Crest (Line 5948 and Line 5952 in ResetAllCrestStateMinimal(), Lines 5959 in ResetAllCrestState(), Line 5964 and Line 5966 in ResetAllCrestState(), those are different methods, Line 12062 in ClearEffectsLite()). Also added logic for when entering a scene by silk soaring (Likes 6781 and Line 6823 and Lines 6840 in EnterScene(), Line 6921 in EnterHeroSubHorizontal()). Also something about queued wall jumps interrupted (Line 8627 LookForQueuedInput()). Also added a check that you're not dead (Line 10931 in CanHarpoonDash()). Also made sure you can't float while double jumping (Line 11079 in CanFloat())
+
+InventoryAudioFadeOut.cs new file // Self explanatory 
+
+962: InventoryItemHeart.cs had changes from position 7 (line 1 place 7) // Added logic for 'heartBeatPlayer', also added a flag if to stop or not when activating/deactivating (Lines 10, Line 57, Line 63, Line 75, Line 89 in Awake(), Line 144 in OnActivate(), Line 155 in OnDeactivate(), Lines 205 in PlayHeartBeat())
+
+1098: LocalizationProjectSettings.cs had changes from position 1098 (line 48 place 26) // Added a null check (Line 48 in GetSysyemLanguage())
+
+1099: LogoLanguage.cs had changes from position 300 (line 19 place 3) // Added something for the new Traditional Chinese option (Line 19, Lines 44 in SetSprite())
+
+1147: MenuAchievement.cs had changes from position 93 (line 5 place 7) // Used type 'TMP_Text' instead of 'Text', nothing actually changed (Line 5, Lines 18)
+
+1168: MenuSetting.cs had changes from position 3168 (line 137 place 3) // Removed an edge-case check, was probably unreachable (Lines 139 in UpdateSetting()
+
+1293: Platform.cs had changes from position 5557 (line 287 place 9) // Removed propeties 'SupportsVibrationFromAudio' and 'UseFieldInfoCache', added property 'SaveAndQuitFadeInDelay' (Line 286, Line 309, Line 310)
+
+1422: QuitToMenu.cs had changes from position 439 (line 16 place 3) // Added flag 'DidSaveAndQuit' (Line 16, Line 20 in Start())
+
+1471: ReportGameEnding.cs had changes from position 227 (line 12 place 2) // Added a call to the Finish() fsm action (Line 12 in OnEnter())
+
+1475: ResetDynamicHierarchy.cs had changes from position 3333 (line 150 place 25) // Added an option to call Disconnect() using a GameObject instead of its transform (Lines 150 in Disconnect())
+
+1503: SaveDataUpgradeHandler.cs had changes from position 814 (line 35 place 21) // Unclear (Line 35, Line 84 in UpgradeSaveData())
+
+1664: SilkSpool.cs had changes from position 2726 (line 152 place 4) // Made sure to check also for Druid's Eyes (previously only checked for Druid's Eye) before removing the moss silk (Line 152 in Awake())
+
+1727: SpriteFlash.cs had changes from position 15994 (line 781 place 3) // Created a muchmaggot effect for NPCs that does not 'require explicit cancel' (Lines 781 in FlashingMaggotNPC())
+
+1739: StartGameEventTrigger.cs had changes from position 431 (line 17 place 15) // Added an 'OnDisabled()' (Lines 17)
+
+1763: SurfaceWaterFloat.cs had changes from position 1700 (line 65 place 19) // Used new 'SurfaceOffset' from change below to make a calculation more accurate (Lines 65 in FixedUpdate())
+
+1764: SurfaceWaterFloater.cs had changes from position 89 (line 5 place 1) // Renamed 'floatHeight' to 'floatCushion' (Lines 12, Line 60, Lines 106 in OnValidate()). Also added new field 'surfaceOffset' (Line 17, Line 62, 102 in OnDrawGizmosSelected())
+
+1855: ToolItemManager.cs had changes from position 2435 (line 141 place 35) // Renamed 'activeState' field to '_activeState' (Line 141, Line 165). Also added a property 'IsChangingActiveState' (Line 167, Line 1441 and Line 1453 in SetActiveState()). Also made the tool cap update when equipping a tool (Line 439 in SetEquippedTool(), Line 456 in SetExtraEquippedTool())
+
+1886: TransitionPoint.cs had changes from position 5258 (line 244 place 7) // Made sure that while silk-soaring you can't go through a transition screen that isn't on the top (Lines 244)
+
+1913: UIManager.cs had changes from position 7946 (line 398 place 4) // Added missing save and quit delay to a timer (Lines 398 in Start()). Also added method UIReturnToProfileMenu() (Lines 785, Lines 986 in StartNewGame()). Also added something for the case of trying to start a new game with no free save slot (Lines 973 in StartNewGame()). Also some logic about the save files menu (Lines 1184 in GoToProfileMenu(), Line Line 1749 in ReloadSaves())
+
+1931: UnitySourceGeneratedAssemblyMonoScriptTypes_v1.cs had changes from position 639 (line 28 place 32) // Something with Unity's types, probably automatic change, it's just a huge list of numbers I can't know what it means
+
+1944: VibrationData.cs had changes from position 851 (line 43 place 9) // Added a getter property for PS5Vibration (just calls the already existing getter method) (Line 43)
+
+1955: VibrationPlayerPlay.cs had changes from position 521 (line 26 place 6) // Made sure to call the Finish() fsm action (Line 26 in OnEnter())
+
+1956: VibrationPlayerPlayV2.cs had changes from position 583 (line 29 place 6) // Made sure to call the Finish() fsm action (Line 29 in OnEnter())
+
+2011: YesNoAction.cs had changes from position 92 (line 5 place 9) // Added enums 'YesNoPromptFormat' and 'DisplayType' (Lines 5, Lines 12)
+
+2037: GlobalEnums\ExtraRestZones.cs had changes from position 346 (line 26 place 17) // Added Pale Lake in preparation to add a bench there (Line 27)
+
+2063: GlobalEnums\SupportedLanguages.cs had changes from position 100 (line 9 place 2) // Added traditional Chinese (ZH_TW code) (Line 9)
+
+HutongGames.PlayMaker.Actions\AudioSnapshotRestore.cs new file // Somewhat self explanatory
+
+2390: HutongGames.PlayMaker.Actions\CheckCollisionSideV2.cs had changes from position 2352 (line 136 place 3) // Redid a lot of the logic (Lines all over)
+
+HutongGames.PlayMaker.Actions\DetachDynamicHierarchy.cs new file // Somewhat self explanatory
+
+HutongGames.PlayMaker.Actions\DialogueYesNoItemV6.cs new file // Goes together with other changes to YesNo dialogue 
+
+HutongGames.PlayMaker.Actions\SuperJumpRaycast.cs new file // Probably used for the new option to Silk Soar through room transition
+
+5024: TMProOld\TMP_SubMeshUI.cs had changes from position 3734 (line 223 place 3) // "obj.AddComponent<CanvasRenderer>();" (Line 223 in AddSubTextObject())
+
+5061: UnityEngine.UI\SaveSlotButton.cs had changes from position 12066 (line 568 place 55) // Made the 'clear save data' button not appear on 'hidden' save files (Line 984 in AnimateToSlotState()). Also a check to stop if a method is acting on its own GameObject (Unclear) (Lines 1707 in ValidateDeselect)
+
+
+
+
+
+Changes from 1.0.29909 to 1.0.29926
+---------------
+
+There were no changes to Assembly-CSharp.dll in this update.
+
+
+
+
+
+Changes from 1.0.29926 to 1.0.29980
+---------------
+
+There were no changes to Assembly-CSharp.dll in this update.
+
+
+
+
+
+Changes from 1.0.29980 to 1.0.30000
+---------------
+
+OverrideExtraRestZone.cs new file // Likely used for the new bench in the Pale Lake
+
+1931: UnitySourceGeneratedAssemblyMonoScriptTypes_v1.cs had changes from position 640 (line 28 place 33) // Something with Unity's types, probably automatic change, it's just a huge list of numbers I can't know what it means
+
+There were no other changes to Assembly-CSharp.dll in this update.
+
+
+
+
